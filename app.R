@@ -30,6 +30,13 @@ ui <- fluidPage(
            plotOutput("distPlot"),
            img(src='myImage.jpg', align = "right")
         )
+    ),
+    
+    fluidRow(
+        sidebarPanel(
+            uiOutput("select.folder"),
+            uiOutput('select.file')
+        )
     )
 )
 
@@ -44,6 +51,20 @@ server <- function(input, output) {
         # draw the histogram with the specified number of bins
         hist(x, breaks = bins, col = 'darkgray', border = 'white')
     })
+    
+    root <- "C:/Users/anthony/Desktop/img_viewer"
+    output$select.folder <-
+        renderUI(expr = selectInput(inputId = 'folder.name',
+                                    label = 'Folder Name',
+                                    choices = list.dirs(path = root,
+                                                        full.names = FALSE,
+                                                        recursive = FALSE)))
+    
+    output$select.file <-
+        renderUI(expr = selectInput(inputId = 'file.name',
+                                    label = 'File Name',
+                                    choices = list.files(path = file.path(root,
+                                                                          input$folder.name))))
 }
 
 # Run the application 
