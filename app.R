@@ -6,7 +6,6 @@ source('build_plot.R')
 
 ALL_FILES <- list.files('www')
 
-# Define UI for application that draws a histogram
 ui <- fluidPage(
 
     # Application title
@@ -21,23 +20,14 @@ ui <- fluidPage(
             )
         ),
         mainPanel(
-            code(textOutput('text')),
-            
-            # App will search www/ for images
-            #img(src='car_smiling.jpg', height=200, width=200),
             imageOutput('show_image'),
             
-            br(), br(),
-            
-            textOutput('selected_date'),
-            textOutput('selected_file'),
             br(), br(),
             plotOutput('cars_plot')
         )
     )
 )
 
-# Define server logic required to draw a histogram
 server <- function(input, output) {
     
     output$selected_file <- renderText({
@@ -48,11 +38,13 @@ server <- function(input, output) {
         make_cars(input$file_options)
     })
     
-    output$show_image <- renderImage(
-        img(src=input$file_options)
-    )
-    
+    output$show_image <- renderImage({
+        list(
+            src=file.path(paste0('www/', input$file_options)),
+            width=300,
+            height=300
+        )
+    })
 }
 
-# Run the application 
 shinyApp(ui = ui, server = server)
