@@ -7,7 +7,6 @@ source('build_plot.R')
 ALL_FILES <- list.files('www')
 
 ui <- fluidPage(
-
     # Application title
     titlePanel("Image Viewer"),
     sidebarLayout(
@@ -21,28 +20,30 @@ ui <- fluidPage(
         ),
         mainPanel(
             imageOutput('show_image'),
-            
-            br(), br(),
-            plotOutput('cars_plot')
+            br(),
+            uiOutput('foo')
         )
     )
 )
-
+  
 server <- function(input, output) {
     
-    output$selected_file <- renderText({
-        paste('You selected ', input$file_options)
+    output$cars_plot <- renderPlot({
+        # Example of using an external script
+        # Would call in ui() with
+        # plotOutput('cars_plot')
+        make_cars(input$file_options)
     })
     
-    output$cars_plot <- renderPlot({
-        make_cars(input$file_options)
+    output$foo <- renderUI({
+        make_img_table()
     })
     
     output$show_image <- renderImage({
         list(
-            src=file.path(paste0('www/', input$file_options)),
-            width=300,
-            height=300
+            src=file.path(paste0('www/', input$file_options))
+            #width=1500,
+            #height=1500
         )
     })
 }
