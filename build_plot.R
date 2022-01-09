@@ -1,11 +1,11 @@
 library(tidyverse)
 
-make_cars <- function(){
+make_cars <- function(mytitle){
   cars %>%
     ggplot(aes(speed, dist))+
     geom_point()+
     labs(
-      title='A Scatterplot',
+      title=mytitle,
       x='Speed',
       y='Distance'
     )+

@@ -24,9 +24,9 @@ ui <- fluidPage(
             code(textOutput('text')),
             
             # App will search www/ for images
-            img(src='car_smiling.jpg', height=200, width=200),
+            #img(src='car_smiling.jpg', height=200, width=200),
+            imageOutput('show_image'),
             
-            dateRangeInput('dates', h3('Date Range')),
             br(), br(),
             
             textOutput('selected_date'),
@@ -40,20 +40,17 @@ ui <- fluidPage(
 # Define server logic required to draw a histogram
 server <- function(input, output) {
     
-    output$selected_date <- renderText({
-        paste(
-            'Start Date: ', input$dates[[1]],
-            'End Date: ', input$dates[[2]]
-        )
-    })
-    
     output$selected_file <- renderText({
         paste('You selected ', input$file_options)
     })
     
     output$cars_plot <- renderPlot({
-        make_cars()
+        make_cars(input$file_options)
     })
+    
+    output$show_image <- renderImage(
+        img(src=input$file_options)
+    )
     
 }
 
