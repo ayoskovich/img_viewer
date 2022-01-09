@@ -1,4 +1,8 @@
+# Run with this to show the code next to the app
+# runApp("app.R", display.mode = "showcase")
+
 library(shiny)
+source('build_plot.R')
 
 ALL_FILES <- list.files('www')
 
@@ -18,14 +22,17 @@ ui <- fluidPage(
         ),
         mainPanel(
             code(textOutput('text')),
-            br(), br(), br(),
             
             # App will search www/ for images
-            img(src='car_smiling.jpg', height=500, width=500),
+            img(src='car_smiling.jpg', height=200, width=200),
+            
             dateRangeInput('dates', h3('Date Range')),
             br(), br(),
+            
             textOutput('selected_date'),
-            textOutput('selected_file')
+            textOutput('selected_file'),
+            br(), br(),
+            plotOutput('cars_plot')
         )
     )
 )
@@ -43,6 +50,11 @@ server <- function(input, output) {
     output$selected_file <- renderText({
         paste('You selected ', input$file_options)
     })
+    
+    output$cars_plot <- renderPlot({
+        make_cars()
+    })
+    
 }
 
 # Run the application 
