@@ -30,3 +30,8 @@ make_img_table <- function(){
     colformat_image(j='imgpath', width=1, height=1) %>% 
     htmltools_value()
 }
+
+
+# Use editData to modify the dataframe
+require(editData)
+result <- editData(mtcars)
