@@ -8,22 +8,32 @@ ALL_FILES <- list.files('www')
 
 ui <- fluidPage(
     # Application title
-    titlePanel("Image Viewer"),
-    sidebarLayout(
-        position = 'right',
-        sidebarPanel(
-            selectInput(
-                "file_options", 
-                label='Select a file',
-                choices = ALL_FILES
-            )
-        ),
-        mainPanel(
-            imageOutput('show_image'),
-            br(),
-            uiOutput('foo')
-        )
+  tabsetPanel(
+    tabPanel('Homepage',
+      titlePanel('foo')
+    ),
+    tabPanel('Summary Stats',
+      titlePanel('foo')
+    ),
+    tabPanel('Testing',
+      titlePanel("Image Viewer"),
+      sidebarLayout(
+          position = 'right',
+          sidebarPanel(
+              selectInput(
+                  "file_options", 
+                  label='Select a file',
+                  choices = ALL_FILES
+              )
+          ),
+          mainPanel(
+              imageOutput('show_image'),
+              br(),
+              uiOutput('foo')
+          )
+      )
     )
+  )
 )
   
 server <- function(input, output) {
@@ -41,9 +51,9 @@ server <- function(input, output) {
     
     output$show_image <- renderImage({
         list(
-            src=file.path(paste0('www/', input$file_options))
-            #width=1500,
-            #height=1500
+            src=file.path(paste0('www/', input$file_options)),
+            width=150,
+            height=150
         )
     })
 }

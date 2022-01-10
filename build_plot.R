@@ -18,11 +18,12 @@ make_cars <- function(mytitle){
 
 
 make_img_table <- function(){
-  dat <- tribble(
-    ~foo, ~imgpath,
-    1, 'www/otters-cute-group-standing-stone-47487202.jpg',
-    2, 'www/istockphoto-1141456840-612x612.jpg',
-  )
+  IMGS <- paste0('www/', list.files('www'))
+  
+  dat <- tibble(
+    path = IMGS,
+    imgpath = IMGS
+  ) 
   
   dat %>% 
     flextable() %>% 
