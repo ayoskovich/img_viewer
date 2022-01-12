@@ -33,5 +33,5 @@ make_img_table <- function(){
 
 
 # Use editData to modify the dataframe
-require(editData)
-result <- editData(mtcars)
+#require(editData)
+#result <- editData(mtcars)

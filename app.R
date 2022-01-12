@@ -5,17 +5,15 @@ library(shiny)
 source('build_plot.R')
 
 ALL_FILES <- list.files('www')
+TAG_OPTIONS <- c(
+  'funny',
+  'not funny'
+)
 
 ui <- fluidPage(
     # Application title
   tabsetPanel(
-    tabPanel('Homepage',
-      titlePanel('foo')
-    ),
-    tabPanel('Summary Stats',
-      titlePanel('foo')
-    ),
-    tabPanel('Testing',
+    tabPanel('Tagging',
       titlePanel("Image Viewer"),
       sidebarLayout(
           position = 'right',
@@ -24,6 +22,11 @@ ui <- fluidPage(
                   "file_options", 
                   label='Select a file',
                   choices = ALL_FILES
+              ),
+              selectInput(
+                'tag1', 
+                label = 'Add the tag here', 
+                choices= TAG_OPTIONS
               )
           ),
           mainPanel(
@@ -32,6 +35,12 @@ ui <- fluidPage(
               uiOutput('foo')
           )
       )
+    ),
+    tabPanel('Homepage',
+      titlePanel('foo')
+    ),
+    tabPanel('Summary Stats',
+      titlePanel('foo')
     )
   )
 )

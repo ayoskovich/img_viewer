@@ -6,6 +6,11 @@ I have lots of images and would like to be able search through them for things l
 - Pictures that were taken with the Canon Canonet ql17
 - Pictures that were taken with kodak 200
 
+# Instructions
+1. Clone the repo
+2. Place images you want to search in the `www/` directory
+
+# Personal Notes
 Tags:
 - Camera (point and shoot, dispo, etc)
 - Film Brand
