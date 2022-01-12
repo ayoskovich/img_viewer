@@ -18,17 +18,17 @@ make_cars <- function(mytitle){
 
 
 make_img_table <- function(){
-  IMGS <- paste0('www/', list.files('www'))
+  #IMGS <- paste0('www/', list.files('www'))
   
-  dat <- tibble(
-    path = IMGS,
-    imgpath = IMGS
-  ) 
-  
-  dat %>% 
-    flextable() %>% 
-    colformat_image(j='imgpath', width=1, height=1) %>% 
-    htmltools_value()
+  tribble(
+    ~file_name, ~iso,
+    'A.jpg', 400,
+    'B.jpg', 400,
+    'C.jpg', 800
+  ) %>% 
+    mutate(
+      img = paste0("<img src='", file_name, "'></img>")
+    )
 }
 
 

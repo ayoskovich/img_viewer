@@ -2,6 +2,7 @@
 # runApp("app.R", display.mode = "showcase")
 
 library(shiny)
+library(DT)
 source('build_plot.R')
 
 ALL_FILES <- list.files('www')
@@ -14,7 +15,7 @@ ui <- fluidPage(
     # Application title
   tabsetPanel(
     tabPanel('Edit tags',
-      titlePanel("Image Viewer"),
+      titlePanel('Image Viewer'),
       sidebarLayout(
           position = 'right',
           sidebarPanel(
@@ -33,12 +34,9 @@ ui <- fluidPage(
           mainPanel(
               imageOutput('show_image'),
               br(),
-              uiOutput('foo')
+              dataTableOutput('mytable')
           )
       )
-    ),
-    tabPanel('Homepage',
-      titlePanel('foo')
     ),
     tabPanel('Summary Stats',
       titlePanel('foo')
@@ -55,9 +53,9 @@ server <- function(input, output) {
         make_cars(input$file_options)
     })
     
-    output$foo <- renderUI({
+    output$mytable <- renderDataTable({
         make_img_table()
-    })
+    }, escape=FALSE)
     
     output$show_image <- renderImage({
         list(
@@ -68,7 +66,9 @@ server <- function(input, output) {
     })
     
     observeEvent(input$send, {
-      print('foo')
+      print(paste0(
+        input$file_options, ',', input$tag1
+      ))
     })
 }
 
