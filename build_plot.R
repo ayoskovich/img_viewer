@@ -18,13 +18,12 @@ make_cars <- function(mytitle){
 
 
 make_img_table <- function(){
-  #IMGS <- paste0('www/', list.files('www'))
+  IMGS <- list.files('www')
+  ISOS <- sample(c(100, 400, 1600), size=length(IMGS), replace=TRUE)
   
-  tribble(
-    ~file_name, ~iso,
-    'A.jpg', 400,
-    'B.jpg', 400,
-    'C.jpg', 800
+  tibble(
+    file_name = IMGS,
+    iso = ISOS
   ) %>% 
     mutate(
       img = paste0("<img src='", file_name, "'></img>")
