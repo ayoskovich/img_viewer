@@ -6,12 +6,16 @@ library(DT)
 source('build_plot.R')
 
 ALL_FILES <- list.files('www')
+
 TAG_OPTIONS <- c(
   'funny',
   'not funny'
 )
 
 ui <- fluidPage(
+  tags$head(
+    tags$link(rel = 'stylesheet', type='text/css', href='mystyles.css')
+  ),
     # Application title
   tabsetPanel(
     tabPanel('Edit tags',
