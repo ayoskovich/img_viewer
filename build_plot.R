@@ -30,8 +30,3 @@ make_img_table <- function(){
       img = paste0("<img src='", file_name, "'></img>")
     )
 }
-
-
-# Use editData to modify the dataframe
-#require(editData)
-#result <- editData(mtcars)
