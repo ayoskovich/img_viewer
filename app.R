@@ -13,7 +13,7 @@ TAG_OPTIONS <- c(
 ui <- fluidPage(
     # Application title
   tabsetPanel(
-    tabPanel('Tagging',
+    tabPanel('Edit tags',
       titlePanel("Image Viewer"),
       sidebarLayout(
           position = 'right',
@@ -27,7 +27,8 @@ ui <- fluidPage(
                 'tag1', 
                 label = 'Add the tag here', 
                 choices= TAG_OPTIONS
-              )
+              ),
+              actionButton('send', 'Click me!')
           ),
           mainPanel(
               imageOutput('show_image'),
@@ -64,6 +65,10 @@ server <- function(input, output) {
             width=150,
             height=150
         )
+    })
+    
+    observeEvent(input$send, {
+      print('foo')
     })
 }
 
