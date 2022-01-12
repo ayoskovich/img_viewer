@@ -28,17 +28,17 @@ ui <- fluidPage(
                   label='Select a file',
                   choices = ALL_FILES
               ),
-              selectInput(
-                'tag1', 
-                label = 'Add the tag here', 
-                choices= TAG_OPTIONS
-              ),
+              #selectInput(
+              #  'tag1', 
+              #  label = 'Add the tag here', 
+              #  choices= TAG_OPTIONS
+              #),
               actionButton('send', 'Click me!')
           ),
           mainPanel(
               imageOutput('show_image'),
               br(),
-              dataTableOutput('mytable')
+              DT::DTOutput('mytable')
           )
       )
     ),
@@ -57,9 +57,9 @@ server <- function(input, output) {
         make_cars(input$file_options)
     })
     
-    output$mytable <- renderDataTable({
+    output$mytable <- DT::renderDT({
         make_img_table()
-    }, escape=FALSE)
+    })
     
     output$show_image <- renderImage({
         list(
