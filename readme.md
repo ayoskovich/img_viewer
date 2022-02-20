@@ -1,24 +1,19 @@
 # (work in progress) Image Viewer
 
-I have lots of images and would like to be able search through them for things like:
+Shiny app that makes searching through photos easier.
 
-- Black and white images that were taken at night
-- Pictures that were taken with the Canon Canonet ql17
-- Pictures that were taken with kodak 200
-
-# Instructions
-1. Clone the repo
-2. Place images you want to search in the `www/` directory
-
-# Personal Notes
-Tags:
-- Camera (point and shoot, dispo, etc)
+## Personal Notes
+Metadata handled by directory structure:
+- Camera (canonet / etc)
+- Camera type
+- ISO
 - Film Brand
-- Film ISO
 - Film bw/color
+- Roll number (show me all the images on that roll)
+
+Tags:
+- hasPeople
 - Location (outside, inside)
 - Scan type (self scan, place that scanned them)
-- Roll number (show me all the images on that roll)
+- Scan date (approximate)
 - Time of day (morning / afternoon / evening)
-- Timestamp (datetime that the image was taken)
-  - Don't always have this
