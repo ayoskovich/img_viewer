@@ -5,7 +5,7 @@ library(shiny)
 library(DT)
 source('build_plot.R')
 
-ALL_FILES <- list.files('www')
+ALL_FILES <- list.files('www', pattern='*.jpg|*.png')
 
 TAG_OPTIONS <- c(
   'funny',
@@ -16,9 +16,16 @@ ui <- fluidPage(
   tags$head(
     tags$link(rel = 'stylesheet', type='text/css', href='mystyles.css')
   ),
-    # Application title
   tabsetPanel(
-    tabPanel('Edit tags',
+    tabPanel('Tagger',
+      titlePanel('Image Tagger'),
+      mainPanel(
+        selectInput('which_img', label='Image File', choices=ALL_FILES),
+        selectInput('iso_tag', label='ISO', choices=c(100, 200, 400)),
+        imageOutput('show_image2')
+      )
+    ),
+    tabPanel('Image Search',
       titlePanel('Image Viewer'),
       sidebarLayout(
           position = 'right',
@@ -41,9 +48,6 @@ ui <- fluidPage(
               DT::DTOutput('mytable')
           )
       )
-    ),
-    tabPanel('Summary Stats',
-      titlePanel('foo')
     )
   )
 )
@@ -64,6 +68,14 @@ server <- function(input, output) {
     output$show_image <- renderImage({
         list(
             src=file.path(paste0('www/', input$file_options)),
+            width=150,
+            height=150
+        )
+    })
+    
+    output$show_image2 <- renderImage({
+        list(
+            src=file.path(paste0('www/', input$which_img)),
             width=150,
             height=150
         )
