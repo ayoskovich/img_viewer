@@ -1,35 +1,36 @@
 
 shinyUI(fluidPage(
   tabsetPanel(
-    tabPanel('Tagger',
-      titlePanel('Image Tagger'),
+    tabPanel(
+      "Tagger",
+      titlePanel("Image Tagger"),
       mainPanel(
         selectInput(
-          'filterSet',
-          label='Which files to view?',
-          choices=c('All files', 'Untagged')
+          "filterSet",
+          label = "Which files to view?",
+          choices = c("All files", "Untagged")
         ),
         selectInput(
-          'which_img',
-          label='Image File', 
-          choices=ALL_FILES
+          "which_img",
+          label = "Image File",
+          choices = ALL_FILES
         ),
-        radioButtons('iso_tag', label='ISO', choices=ISO_CHOICES),
-        
+        radioButtons("iso_tag", label = "ISO", choices = ISO_CHOICES),
+
         # Hacky way to remove whitespace around resized image
         HTML("<div style='height: 250px;'>"),
-        imageOutput('show_image'),
+        imageOutput("show_image"),
         HTML("</div>"),
-        
-        actionButton('send', 'Update output file'),
-        dataTableOutput('logdata')
+        actionButton("send", "Update output file"),
+        dataTableOutput("logdata")
       )
     ),
-    tabPanel('Search',
-      titlePanel('Image Search'),
+    tabPanel(
+      "Search",
+      titlePanel("Image Search"),
       mainPanel(
-        radioButtons('which_iso', label='ISO', choices=ISO_CHOICES),
-        uiOutput('myboxes')
+        radioButtons("which_iso", label = "ISO", choices = ISO_CHOICES),
+        uiOutput("myboxes")
       )
     )
   )
