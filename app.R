@@ -3,7 +3,6 @@
 
 library(shiny)
 library(DT)
-source('build_plot.R')
 
 ALL_FILES <- list.files('www', pattern='*.jpg|*.png')
 
@@ -22,7 +21,8 @@ ui <- fluidPage(
       mainPanel(
         selectInput('which_img', label='Image File', choices=ALL_FILES),
         selectInput('iso_tag', label='ISO', choices=c(100, 200, 400)),
-        imageOutput('show_image2')
+        imageOutput('show_image'),
+        actionButton('send', 'Click me!')
       )
     ),
     tabPanel('Image Search',
@@ -43,7 +43,6 @@ ui <- fluidPage(
               actionButton('send', 'Click me!')
           ),
           mainPanel(
-              imageOutput('show_image'),
               br(),
               DT::DTOutput('mytable')
           )
@@ -54,26 +53,11 @@ ui <- fluidPage(
   
 server <- function(input, output) {
     
-    output$cars_plot <- renderPlot({
-        # Example of using an external script
-        # Would call in ui() with
-        # plotOutput('cars_plot')
-        make_cars(input$file_options)
-    })
-    
     output$mytable <- DT::renderDT({
         make_img_table()
     })
     
     output$show_image <- renderImage({
-        list(
-            src=file.path(paste0('www/', input$file_options)),
-            width=150,
-            height=150
-        )
-    })
-    
-    output$show_image2 <- renderImage({
         list(
             src=file.path(paste0('www/', input$which_img)),
             width=150,
@@ -82,9 +66,7 @@ server <- function(input, output) {
     })
     
     observeEvent(input$send, {
-      print(paste0(
-        input$file_options, ',', input$tag1
-      ))
+      print(input$which_img)
     })
 }
 
