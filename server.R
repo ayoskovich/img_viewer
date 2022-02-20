@@ -1,54 +1,9 @@
-# Run with this to show the code next to the app
-# runApp("app.R", display.mode = "showcase")
-
 library(shiny)
-library(tidyverse)
-library(lubridate)
 
 ALL_FILES <- list.files('www', pattern='*.jpg|*.png')
 LOG_FILE <- 'logfile.rds'
 
-
-ui <- fluidPage(
-  #tags$head(
-  #  tags$link(rel = 'stylesheet', type='text/css', href='mystyles.css')
-  #),
-  tabsetPanel(
-    tabPanel('Tagger',
-      titlePanel('Image Tagger'),
-      mainPanel(
-        selectInput(
-          'filterSet',
-          label='Which files to view?',
-          choices=c('All files', 'Untagged')
-        ),
-        selectInput(
-          'which_img',
-          label='Image File', 
-          choices=ALL_FILES
-        ),
-        radioButtons('iso_tag', label='ISO', choices=c(100, 200, 400)),
-        
-        # Hacky way to remove whitespace around resized image
-        HTML("<div style='height: 250px;'>"),
-        imageOutput('show_image'),
-        HTML("</div>"),
-        
-        actionButton('send', 'Update output file'),
-        dataTableOutput('logdata')
-      )
-    ),
-    tabPanel('Search',
-      titlePanel('Image Search'),
-      mainPanel(
-        radioButtons('which_iso', label='ISO', choices=c(100, 200, 400)),
-        uiOutput('myboxes')
-      )
-    )
-  )
-)
-  
-server <- function(input, output, session) {
+shinyServer(function(input, output, session) {
     
     IMG_LIST <- list('A.jpg', 'B.jpg')
     v <- list()
@@ -119,6 +74,4 @@ server <- function(input, output, session) {
         updateSelectInput(session, 'which_img', choices=tagged_files())
       } 
     })
-}
-
-shinyApp(ui = ui, server = server)
+})
