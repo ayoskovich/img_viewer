@@ -1,13 +1,26 @@
 
 shinyServer(function(input, output, session) {
     
-    IMG_LIST <- list('A.jpg', 'B.jpg')
-    v <- list()
-    for (i in 1:length(IMG_LIST)){
-      v[[i]] <- img(src=IMG_LIST[i], height='150px')
-    }
+  
+  same_iso <- reactive({
+    read_rds(LOG_FILE) %>% 
+      group_by(img) %>% 
+      filter(dt == max(dt)) %>% 
+      filter(iso == input$which_iso) %>% 
+      ungroup() %>% 
+      pull(img) %>% 
+      unique()
+  })
     
-    output$myboxes <- renderUI(v)
+    output$myboxes <- renderUI({
+      v <- list()
+      for (i in 1:length(same_iso())){
+        v[[i]] <- img(src=same_iso()[i], height='150px')
+      }
+      
+      v
+    })
+    #output$myboxes <- renderUI(v)
     
     output$show_image <- renderImage({
         list(
@@ -72,7 +85,7 @@ shinyServer(function(input, output, session) {
     })
     
     all_files <- reactive({
-      read_rds(LOG_FILE) %>% 
+      tibble(img = ALL_FILES) %>% 
         pull(img)
     })
     
