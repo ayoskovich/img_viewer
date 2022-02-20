@@ -4,9 +4,6 @@ ALL_FILES <- list.files('www', pattern='*.jpg|*.png')
 LOG_FILE <- 'logfile.rds'
 
 shinyUI(fluidPage(
-  #tags$head(
-  #  tags$link(rel = 'stylesheet', type='text/css', href='mystyles.css')
-  #),
   tabsetPanel(
     tabPanel('Tagger',
       titlePanel('Image Tagger'),
