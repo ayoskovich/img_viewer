@@ -8,6 +8,7 @@ shinyUI(dashboardPage(
     )
   ),
   dashboardBody(
+    useShinyjs(),
     tabItems(
       tabItem(
         tabName = "tagger",
@@ -22,15 +23,18 @@ shinyUI(dashboardPage(
           label = "Image File",
           choices = ALL_FILES
         ),
-        radioButtons("iso_tag", label = "ISO", choices = ISO_CHOICES),
-
+        hidden(
+          radioButtons("iso_tag", label = "ISO", choices = ISO_CHOICES)
+        ),
         # Hacky way to remove whitespace around resized image
         HTML("<div style='height: 250px;'>"),
         imageOutput("show_image"),
         HTML("</div>"),
         actionButton("send", "Update output file"),
-        dataTableOutput("logdata")
+        dataTableOutput("logdata"),
+        actionButton('mybutt', 'Edit data')
       ),
+      
       tabItem(
         tabName = "viewer",
         h1("Search for images"),

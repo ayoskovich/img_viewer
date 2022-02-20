@@ -1,5 +1,10 @@
 
 shinyServer(function(input, output, session) {
+  
+  observeEvent(input$mybutt, {
+    toggle('iso_tag')
+  })
+  
   same_iso <- reactive({
     read_rds(LOG_FILE) %>%
       group_by(img) %>%
