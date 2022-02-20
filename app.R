@@ -40,32 +40,34 @@ server <- function(input, output) {
     })
     
     output$logdata <- renderDataTable({
-      read_csv(
-        'logfile.csv',
-        col_types=cols(
-          dt=col_datetime(),
-          img=col_character(),
-          iso=col_integer()
+      read_rds('logfile.rds') %>% 
+        filter(img == input$which_img) %>% 
+        filter(dt == max(dt)) %>% 
+        mutate(across(everything(), as.character)) %>% 
+        pivot_longer(
+          everything(),
+          names_to='Variable',
+          values_to='Value'
         )
+    },
+      options=list(
+        info=F,
+        searching=F,
+        ordering=F,
+        paging=F,
+        lengthChange=F
       )
-    })
+    )
     
     observeEvent(input$send, {
-      read_csv(
-        'logfile.csv',
-        col_types=cols(
-          dt=col_datetime(),
-          img=col_character(),
-          iso=col_integer()
-        )
-      ) %>% 
+      read_rds('logfile.rds') %>% 
         bind_rows(
           tribble(
             ~dt, ~img, ~iso, 
             now(), input$which_img, as.integer(input$iso_tag)
           )
         ) %>% 
-        write_csv('logfile.csv')
+        write_rds('logfile.rds')
       
       showNotification(
         'Data updated!', 
