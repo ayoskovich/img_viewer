@@ -6,11 +6,6 @@ library(DT)
 
 ALL_FILES <- list.files('www', pattern='*.jpg|*.png')
 
-TAG_OPTIONS <- c(
-  'funny',
-  'not funny'
-)
-
 ui <- fluidPage(
   tags$head(
     tags$link(rel = 'stylesheet', type='text/css', href='mystyles.css')
@@ -24,38 +19,11 @@ ui <- fluidPage(
         imageOutput('show_image'),
         actionButton('send', 'Click me!')
       )
-    ),
-    tabPanel('Image Search',
-      titlePanel('Image Viewer'),
-      sidebarLayout(
-          position = 'right',
-          sidebarPanel(
-              selectInput(
-                  "file_options", 
-                  label='Select a file',
-                  choices = ALL_FILES
-              ),
-              #selectInput(
-              #  'tag1', 
-              #  label = 'Add the tag here', 
-              #  choices= TAG_OPTIONS
-              #),
-              actionButton('send', 'Click me!')
-          ),
-          mainPanel(
-              br(),
-              DT::DTOutput('mytable')
-          )
-      )
     )
   )
 )
   
 server <- function(input, output) {
-    
-    output$mytable <- DT::renderDT({
-        make_img_table()
-    })
     
     output$show_image <- renderImage({
         list(

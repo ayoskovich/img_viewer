@@ -1,4 +1,4 @@
-# Image Viewer
+# (work in progress) Image Viewer
 
 I have lots of images and would like to be able search through them for things like:
 
