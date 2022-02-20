@@ -1,10 +1,11 @@
 
 shinyUI(dashboardPage(
-  dashboardHeader(title = "Image Tagger"),
+  dashboardHeader(title = "Image Viewer"),
   dashboardSidebar(
     sidebarMenu(
-      menuItem("Edit Tags", tabName = "tagger", icon = icon("dashboard")),
-      menuItem("Photo Search", tabName = "viewer", icon = icon("dashboard"))
+      menuItem("Edit Tags", tabName = "tagger", icon = icon('tags')),
+      menuItem("Photo Search", tabName = "viewer", icon = icon('search')),
+      menuItem("About", tabName = "abt", icon = icon('info'))
     )
   ),
   dashboardBody(
@@ -26,13 +27,12 @@ shinyUI(dashboardPage(
         hidden(
           radioButtons("iso_tag", label = "ISO", choices = ISO_CHOICES)
         ),
-        # Hacky way to remove whitespace around resized image
-        HTML("<div style='height: 250px;'>"),
-        imageOutput("show_image"),
-        HTML("</div>"),
         actionButton("send", "Update output file"),
         dataTableOutput("logdata"),
-        actionButton('mybutt', 'Edit data')
+        actionButton('mybutt', 'Edit data'),
+        br(),
+        br(),
+        uiOutput("show_image")
       ),
       
       tabItem(
@@ -40,6 +40,12 @@ shinyUI(dashboardPage(
         h1("Search for images"),
         radioButtons("which_iso", label = "ISO", choices = ISO_CHOICES),
         uiOutput("myboxes")
+      ),
+      
+      tabItem(
+        tabName = 'abt',
+        h1('About'),
+        p('This is the about page.')
       )
     )
   )

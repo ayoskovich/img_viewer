@@ -24,13 +24,10 @@ shinyServer(function(input, output, session) {
     v
   })
 
-  output$show_image <- renderImage({
-    list(
-      src = file.path(paste0("www/", input$which_img)),
-      width = "50%", height = "50%"
-    )
+  output$show_image <- renderUI({
+    img(src = input$which_img, height='500px')
   })
-
+  
   thedatums <- reactive({
     read_rds(LOG_FILE) %>%
       filter(img == input$which_img)
