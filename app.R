@@ -8,6 +8,7 @@ library(lubridate)
 ALL_FILES <- list.files('www', pattern='*.jpg|*.png')
 LOG_FILE <- 'logfile.rds'
 
+
 ui <- fluidPage(
   #tags$head(
   #  tags$link(rel = 'stylesheet', type='text/css', href='mystyles.css')
@@ -16,7 +17,16 @@ ui <- fluidPage(
     tabPanel('Tagger',
       titlePanel('Image Tagger'),
       mainPanel(
-        selectInput('which_img', label='Image File', choices=ALL_FILES),
+        selectInput(
+          'filterSet',
+          label='Which files to view?',
+          choices=c('All files', 'Untagged')
+        ),
+        selectInput(
+          'which_img',
+          label='Image File', 
+          choices=ALL_FILES
+        ),
         radioButtons('iso_tag', label='ISO', choices=c(100, 200, 400)),
         
         # Hacky way to remove whitespace around resized image
@@ -38,7 +48,7 @@ ui <- fluidPage(
   )
 )
   
-server <- function(input, output) {
+server <- function(input, output, session) {
     
     IMG_LIST <- list('A.jpg', 'B.jpg')
     v <- list()
@@ -55,8 +65,7 @@ server <- function(input, output) {
         )
     })
     
-    output$logdata <- renderDataTable(
-      {
+    output$logdata <- renderDataTable({
         read_rds(LOG_FILE) %>% 
           filter(img == input$which_img) %>% 
           filter(dt == max(dt)) %>% 
@@ -96,6 +105,19 @@ server <- function(input, output) {
         closeButton = T,
         type='message'
       )
+    })
+    
+    tagged_files <- reactive({
+      tibble(img = ALL_FILES) %>% 
+        left_join(read_rds(LOG_FILE)) %>% 
+        filter(is.na(dt)) %>% 
+        pull(img)
+    })
+    
+    observeEvent(input$filterSet, {
+      if (input$filterSet == 'Untagged'){
+        updateSelectInput(session, 'which_img', choices=tagged_files())
+      } 
     })
 }
 
