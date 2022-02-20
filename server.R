@@ -1,4 +1,5 @@
 library(shiny)
+library(tidyverse)
 
 ALL_FILES <- list.files('www', pattern='*.jpg|*.png')
 LOG_FILE <- 'logfile.rds'
@@ -69,9 +70,16 @@ shinyServer(function(input, output, session) {
         pull(img)
     })
     
+    all_files <- reactive({
+      read_rds(LOG_FILE) %>% 
+        pull(img)
+    })
+    
     observeEvent(input$filterSet, {
       if (input$filterSet == 'Untagged'){
         updateSelectInput(session, 'which_img', choices=tagged_files())
-      } 
+      } else if (input$filterSet == 'All files'){
+        updateSelectInput(session, 'which_img', choices=all_files())
+      }
     })
 })
