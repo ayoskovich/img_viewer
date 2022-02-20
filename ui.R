@@ -1,5 +1,6 @@
 library(shiny)
 library(tidyverse)
+library(lubridate)
 
 ALL_FILES <- list.files('www', pattern='*.jpg|*.png')
 LOG_FILE <- 'logfile.rds'

@@ -1,5 +1,6 @@
 library(shiny)
 library(tidyverse)
+library(lubridate)
 
 ALL_FILES <- list.files('www', pattern='*.jpg|*.png')
 LOG_FILE <- 'logfile.rds'
@@ -21,30 +22,36 @@ shinyServer(function(input, output, session) {
         )
     })
     
+    thedatums <- reactive({
+      read_rds(LOG_FILE) %>% 
+        filter(img == input$which_img)
+    })
+    
     output$logdata <- renderDataTable({
-        read_rds(LOG_FILE) %>% 
-          filter(img == input$which_img) %>% 
-          filter(dt == max(dt)) %>% 
-          select(
-            `Last Updated` = dt,
-            `ISO` = iso
-          ) %>% 
-          mutate(across(everything(), as.character)) %>% 
-          pivot_longer(
-            everything(),
-            names_to='Variable',
-            values_to='Value'
-          )
-      },
-      options=list(
-        info=F,
-        searching=F,
-        ordering=F,
-        paging=F,
-        lengthChange=F
-      )
+      thedatums() %>% 
+        # Get most recent value
+        filter(dt == max(dt)) %>% 
+        select(
+          `Last Updated` = dt,
+          `ISO` = iso
+        ) %>% 
+        mutate(across(everything(), as.character)) %>% 
+        pivot_longer(
+          everything(),
+          names_to='Variable',
+          values_to='Value'
+        )
+    },
+    options=list(
+      info=F,
+      searching=F,
+      ordering=F,
+      paging=F,
+      lengthChange=F
+    )
     )
     
+    # Modify tags and write to file
     observeEvent(input$send, {
       read_rds(LOG_FILE) %>% 
         bind_rows(
